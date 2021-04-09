@@ -1,120 +1,132 @@
 <template>
     <div>
         <div id="app">
+             <h1>通讯录</h1>
             <div class="head">
-                <h1>通讯录</h1>
-                <!--输入框-->
+                 <!--输入框-->
                 <el-row :gutter="20">
                     <el-col :span="6">
-                        <el-input v-model="info.name" placeholder="姓名"></el-input>
+                    <el-input v-model="info.name" placeholder="姓名"></el-input>
                     </el-col>
                     <el-col :span="6">
-                        <el-input v-model="info.gender" placeholder="性别"></el-input>
+                    <el-input v-model="info.gender" placeholder="性别"></el-input>
                     </el-col>
                     <el-col :span="6">
-                        <el-input v-model="info.phone" placeholder="联系方式"></el-input>
+                    <el-input v-model="info.phone" placeholder="联系方式"></el-input>
                     </el-col>
                     <el-col :span="6">
-                        <el-date-picker v-model="info.birth" type="date" placeholder="选择日期" format="yyyy 年 MM 月 dd 日" value-format="yyyy-MM-dd">
-                        </el-date-picker>
+                    <el-date-picker v-model="info.birth" type="date" placeholder="选择日期" format="yyyy 年 MM 月 dd 日" value-format="yyyy-MM-dd">
+                    </el-date-picker>
                     </el-col>
+                    </el-row>
+                    <!--添加按钮-->
+                    <el-row style="margin-top:20px">
+                        <el-col :span="12"><el-button type="primary" class="add-btn" @click="addUser">添加</el-button></el-col>
+                        <el-col :span="12"><el-button type="success" class="find-btn" @click="findDialogDisplay">查询</el-button></el-col>
+
+                    
+
                 </el-row>
-                <!--添加按钮-->
-                <el-row style="margin-top: 20px">
-
-                    <el-button type="primary" class="add-btn" @click="addUser">添加</el-button>
-                    <el-button type="success" class="find-btn" @click="findDialogDisplay">查询</el-button>
-
-                </el-row>
-
-
-            </div>
+                </div>
             <div class="body">
-                <el-table :data="tableData" style="width: 100% " height="500">
-                    <el-table-column  label="序号" width="50" ><template slot-scope="scope"> {{ scope.$index + 1 }}</template></el-table-column>
-                    <el-table-column prop="name" label="姓名" width="180"></el-table-column>
-                    <el-table-column prop="gender" label="性别" width="180"></el-table-column>
-                    <el-table-column prop="phone" label="联系方式" width="180"></el-table-column>
-                    <el-table-column prop="birth" label="出生日期" width="180"></el-table-column>
-                    <el-table-column  label="操作" width="180">
-                         <template slot-scope="scope">        
-                            <!--row是取一行的数据，index是序号-->
-                            <el-button type="primary" icon="el-icon-edit" circle @click="editUser(scope.row,scope.$index)"></el-button>
-                            <el-button type="danger" icon="el-icon-delete" circle @click="delUser(scope.$index)"></el-button>
-                        </template>
-                        
-                    </el-table-column>
-      
-                 </el-table>
-            </div>
-            <div class="dialog">
-                        </div>
-        <!--dialog对话框，编辑信息-->
-        <el-dialog title="编辑信息" :visible.sync="dialogVisible" width="30%" :before-close="handleClose">
-            <div>
+                <template>
+                <!--element-ui中table获取数据可以用slot-scope="scope"或者直接在列名里写type="index"-->
+                <el-table :data="tableData" style="width: 100%" height="500px">
+
+                <el-table-column label="序号" width="50">
+                <template slot-scope="scope">
+                {{ scope.$index + 1 }}
+
+                </template>
+                </el-table-column>
+                <el-table-column prop="name" label="姓名" width="180">
+                </el-table-column>
+                <el-table-column prop="gender" label="性别" width="180">
+                </el-table-column>
+                <el-table-column prop="phone" label="联系方式" width="180">
+                </el-table-column>
+                <el-table-column prop="birth" label="出生日期">
+                </el-table-column>
+                <el-table-column label="操作">
+                <template slot-scope="scope">        
+                <!--row是取一行的数据，index是序号-->
+                <el-button type="primary" icon="el-icon-edit" circle @click="editUser(scope.row,scope.$index)"></el-button>
+                <el-button type="danger" icon="el-icon-delete" circle @click="delUser(scope.$index)"></el-button>
+                </template>
+
+
+                </el-table-column>
+
+                </el-table>
+                </template>
+
+                </div>
+            <div class="footer">
+                <el-dialog title="编辑信息" :visible.sync="dialogVisible" width="30%" :before-close="handleClose">
+                <div>
                 <el-form ref="form" :model="editInfo" label-width="150px">
-                    <el-form-item label="修改姓名：">
-                        <el-input v-model="editInfo.name"></el-input>
-                    </el-form-item>
-                    <el-form-item label="修改性别：">
-                        <el-input v-model="editInfo.gender"></el-input>
-                    </el-form-item>
-                    <el-form-item label="修改联系方式：">
-                        <el-input v-model="editInfo.phone"></el-input>
-                    </el-form-item>
-                    <el-form-item label="修改出生日期：">
-                        <el-date-picker v-model="editInfo.birth" type="date" placeholder="选择日期" format="yyyy 年 MM 月 dd 日" value-format="yyyy-MM-dd">
-                        </el-date-picker>
-                    </el-form-item>
+                <el-form-item label="修改姓名：">
+                <el-input v-model="editInfo.name"></el-input>
+                </el-form-item>
+                <el-form-item label="修改性别：">
+                <el-input v-model="editInfo.gender"></el-input>
+                </el-form-item>
+                <el-form-item label="修改联系方式：">
+                <el-input v-model="editInfo.phone"></el-input>
+                </el-form-item>
+                <el-form-item label="修改出生日期：">
+                <el-date-picker v-model="editInfo.birth" type="date" placeholder="选择日期" format="yyyy 年 MM 月 dd 日" value-format="yyyy-MM-dd">
+                </el-date-picker>
+                </el-form-item>
 
                 </el-form>
-            </div>
-            <span slot="footer" class="dialog-footer">
-            <el-button @click="dialogVisible = false">取 消</el-button>
-            <el-button type="primary" @click="confirmInfo">确 定</el-button>
-  </span>
-        </el-dialog>
+                </div>
+                <span slot="footer" class="dialog-footer">
+                <el-button @click="cancelModify">取 消</el-button>
+                <el-button type="primary" @click="confirmInfo">确 定</el-button>
+                </span>
+                </el-dialog>
 
-        <!--dialog对话框，查询信息-->
-        <el-dialog title="查找信息" :visible.sync="dialogFind" width="80%" :before-close="handleFindClose">
-            <div>
+                <!--dialog对话框，查询信息-->
+                <el-dialog title="查找信息" :visible.sync="dialogFind" width="80%" :before-close="handleFindClose">
+                <div>
                 <el-input v-model="findInfoName" placeholder="请输入要查找的姓名"></el-input>
 
                 <template>
-                    
-                        <el-table
-                          :data="findInfo"
-                          style="width: 100%">
-                          <el-table-column
-      type="index"
-      width="50">
-    </el-table-column>
 
-                          
-                          <el-table-column
-                            prop="name"
-                            label="姓名"
-                            width="180">
-                          </el-table-column>
-                          <el-table-column
-                            prop="gender"
-                            label="性别"
-                            width="180">
-                          </el-table-column>
-                          <el-table-column
-                            prop="phone"
-                            label="联系方式">
-                          </el-table-column>
-                          <el-table-column
-                            prop="birth"
-                            label="出生日期">
-                          </el-table-column>
-                          <el-table-column label="操作">
-                                <template slot-scope="scope">        
-                                    <!--row是取一行的数据，index是序号-->
-                                    <el-button type="primary" icon="el-icon-edit" circle @click="editFindUser(scope.row,scope.$index)"></el-button>
-                                    <el-button type="danger" icon="el-icon-delete" circle @click="delFindUser(scope.$index)"></el-button>
-                                </template>
+                <el-table
+                :data="findInfo"
+                style="width: 100%">
+                <el-table-column
+                type="index"
+                width="50">
+                </el-table-column>
+
+
+                <el-table-column
+                prop="name"
+                label="姓名"
+                width="180">
+                </el-table-column>
+                <el-table-column
+                prop="gender"
+                label="性别"
+                width="180">
+                </el-table-column>
+                <el-table-column
+                prop="phone"
+                label="联系方式">
+                </el-table-column>
+                <el-table-column
+                prop="birth"
+                label="出生日期">
+                </el-table-column>
+                <el-table-column label="操作">
+                <template slot-scope="scope">        
+                <!--row是取一行的数据，index是序号-->
+                <el-button type="primary" icon="el-icon-edit" circle @click="editFindUser(scope.row,scope.$index)"></el-button>
+                <el-button type="danger" icon="el-icon-delete" circle @click="delFindUser(scope.$index)"></el-button>
+                </template>
 
 
                 </el-table-column>
@@ -122,60 +134,62 @@
                 </template>
 
 
-            </div>
-            <span slot="footer" class="dialog-footer">
+                </div>
+                <span slot="footer" class="dialog-footer">
                 <el-button @click="dialogFind = false">取 消</el-button>
                 <el-button type="primary" @click="findInfoOut">查 找</el-button>
-      </span>
-        </el-dialog>
+                </span>
+                </el-dialog>
 
 
 
-        <!--dialog对话框，编辑信息-->
-        <el-dialog title="编辑信息" :visible.sync="dialogVisible" width="30%" :before-close="handleClose">
-            <div>
+                <!--dialog对话框，编辑信息-->
+                <!-- <el-dialog title="编辑信息" :visible.sync="dialogVisible" width="30%" :before-close="handleClose">
+                <div>
                 <el-form ref="form" :model="editInfo" label-width="150px">
-                    <el-form-item label="修改姓名：">
-                        <el-input v-model="editInfo.name"></el-input>
-                    </el-form-item>
-                    <el-form-item label="修改性别：">
-                        <el-input v-model="editInfo.gender"></el-input>
-                    </el-form-item>
-                    <el-form-item label="修改联系方式：">
-                        <el-input v-model="editInfo.phone"></el-input>
-                    </el-form-item>
-                    <el-form-item label="修改出生日期：">
-                        <el-date-picker v-model="editInfo.birth" type="date" placeholder="选择日期" format="yyyy 年 MM 月 dd 日" value-format="yyyy-MM-dd">
-                        </el-date-picker>
-                    </el-form-item>
+                <el-form-item label="修改姓名：">
+                <el-input v-model="editInfo.name"></el-input>
+                </el-form-item>
+                <el-form-item label="修改性别：">
+                <el-input v-model="editInfo.gender"></el-input>
+                </el-form-item>
+                <el-form-item label="修改联系方式：">
+                <el-input v-model="editInfo.phone"></el-input>
+                </el-form-item>
+                <el-form-item label="修改出生日期：">
+                <el-date-picker v-model="editInfo.birth" type="date" placeholder="选择日期" format="yyyy 年 MM 月 dd 日" value-format="yyyy-MM-dd">
+                </el-date-picker>
+                </el-form-item>
 
                 </el-form>
-            </div>
-            <span slot="footer" class="dialog-footer">
+                </div>
+                <span slot="footer" class="dialog-footer">
                 <el-button @click="dialogVisible = false">取 消</el-button>
                 <el-button type="primary" @click="confirmFindInfo">确 定</el-button>
-      </span>
-        </el-dialog>
+                </span>
+                </el-dialog> -->
 
+                </div>
+           
+        </div>
     </div>
-
-
-            </div>
         
     
 </template>
 
 <script>
 export default {
-    data(){
-        return{
-            info:{
-                name:'',
-                gender:'',
-                phone:'',
-                birth:'',
+    data() {
+        return {
+            //录入的信息
+            info: {
+                name: '',
+                gender: '',
+                phone: '',
+                birth: ''
             },
-            tableData:[{
+            //表单数据
+            tableData: [{
                     name: 'Joy',
                     gender: '男',
                     phone: '13861870398',
@@ -196,24 +210,26 @@ export default {
                     gender: '女',
                     phone: '13123145123',
                     birth: '1979-12-16'
-                },],
-                dialogVisible: false,
-                dialogFind: false,
-                beforeindex: 0,
-                editInfo: {
+                },
+            ],
+            dialogVisible: false,
+            dialogFind: false,
+            beforeindex: 0,
+            editInfo: {
                 name: '',
                 gender: '',
                 phone: '',
                 birth: '',
 
-                },
-                findInfoName: '',
-                findInfo: [],
+            },
+            findInfoName: '',
+            findInfo: [],
+
+
         }
-        
+    
     },
     methods:{
-        
         /*-----------------------------------------------------------------*/
         //增
         addUser() {
@@ -291,6 +307,15 @@ export default {
         /*-----------------------------------------------------------------*/
         //改
         //这部分主要是将要修改的信息存入一个对象
+        cancelModify(){
+            this.dialogVisible = false;
+            this.$message({
+          message: '已取消修改',
+          type: 'warning'
+        });
+
+        },
+
         editUser(item, index) {
 
             //this.dialogVisible = ture;
@@ -351,7 +376,12 @@ export default {
                 return;
             } else {
                 this.dialogVisible = false;
-                Vue.set(this.tableData, this.beforeindex, this.editInfo);
+                this.tableData.splice(this.beforeindex , 1 , this.editInfo)
+                //Vue.set(this.tableData, this.beforeindex, this.editInfo);
+                this.$message({
+                     message: '修改成功',
+                    type: 'success'
+                });
             }
 
 
@@ -419,36 +449,42 @@ export default {
         },
 
         delFindUser(index) {
-            this.$confirm('此操作将永久删除该信息, 是否继续?', '提示', {
+            
+
+
+            this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
                 confirmButtonText: '确定',
                 cancelButtonText: '取消',
                 type: 'warning'
-            }).then(() => {
-                for (var i = 0; i < this.tableData.length; i++) {
-                    if (this.tableData[i].name === this.findInfo[index].name &&
-                        this.tableData[i].gender === this.findInfo[index].gender &&
-                        this.tableData[i].phone === this.findInfo[index].phone &&
-                        this.tableData[i].birth === this.findInfo[index].birth) {
-                        this.findInfo.splice(index, 1);
-                        this.tableData.splice(i, 1);
+                }).then(() => {
+
+                    /* 删除查询列表中的和总表中的对应信息 */
+                    for(var i = 0;i<this.tableData.length;i++){
+                        if(this.tableData[i].name == this.findInfo[index].name
+                        &&this.tableData[i].gender == this.findInfo[index].gender
+                        &&this.tableData[i].phone == this.findInfo[index].phone
+                        &&this.tableData[i].birth == this.findInfo[index].birth){
+                            this.tableData.splice(i,1);
+                            //this.findInfo.splice(index,1);
+                        }
                     }
-                }
+                    this.findInfo.splice(index,1);
 
-                this.$message({
 
+                    this.$message({
                     type: 'success',
                     message: '删除成功!'
-                });
-            }).catch(() => {
-                this.$message({
-                    type: 'info',
-                    message: '已取消删除'
-                });
-            });
+                    });
+                    }).catch(() => {
+                        this.$message({
+                        type: 'info',
+                        message: '已取消删除'
+                        });          
+                    });
         },
 
         editFindUser(item, index) {
-            console.log(item);
+            /* console.log(item);
             this.beforeindex = index;
             this.editInfo = {
                 name: item.name,
@@ -456,12 +492,12 @@ export default {
                 phone: item.phone,
                 birth: item.birth,
             }
-            this.dialogVisible = true;
+            this.dialogVisible = true; */
 
         },
 
         confirmFindInfo() {
-            if (!this.editInfo.name) {
+            /* if (!this.editInfo.name) {
                 this.$message({
                     message: '请输入姓名',
                     type: 'warning'
@@ -491,18 +527,19 @@ export default {
                 return;
             } else {
                 this.dialogVisible = false;
-                Vue.set(this.findInfo, this.beforeindex, this.editInfo);
+                this.findInfo.splice(this.beforeindex , 1 , this.editInfo);
+                //Vue.set(this.findInfo, this.beforeindex, this.editInfo);
                 for (var i = 0; i < this.tableData.length; i++) {
                     if (this.tableData[i].name === this.editInfo.name &&
                         this.tableData[i].gender === this.editInfo.gender &&
                         this.tableData[i].phone === this.editInfo.phone &&
                         this.tableData[i].birth === this.editInfo.birth) {
-
-                        Vue.set(this.tableData, i, this.editInfo);
+                        this.findInfo.splice(i , 1 , this.editInfo)
+                        //Vue.set(this.tableData, i, this.editInfo);
                     }
                 }
 
-            }
+            } */
 
 
 
@@ -516,26 +553,26 @@ export default {
 </script>
 
 <style>
-
-
-
 #app {
     width: 1024px;
     margin: 0 auto;
-    
 }
 
 .add-btn {
     margin-top: 20px;
-    width: 49%;
+    width: 100%;
 }
 
 .find-btn {
     margin-top: 20px;
-    width: 49%;
+    width: 100%;
 }
 
 .body {
     margin-top: 20px;
 }
+
+
+
+
 </style>

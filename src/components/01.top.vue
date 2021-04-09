@@ -1,7 +1,12 @@
 <template>
     <div class="top">
-        Welcome to FFTools!
-        
+        <div class="topleft">
+<img src="../assets/ff14-logo.png" height="100px" width="200px" >
+        </div>
+        <div class="topright">
+<h1 style="color:red">Welcome to FFTools</h1>
+        </div>
+
     </div>
 </template>
 
@@ -13,17 +18,24 @@ export default {
 
 <style>
 .top{
-    margin: 0 auto;
-    line-height: 100px;/*垂直居中关键*/
-
-text-align:center;
-
-height: 100px;
-font-size: 36px;
-
-
-
-background-color: #ccc;
+    display: flex;
+    height: 120px;
 }
+.topleft{
+    flex: 0;
+
+    width: 200px;
+    background-color: red;
+
+}
+.topright{
+    flex:1;
+
+}
+
+.topleft img{
+    margin-top: 10px;
+}
+
 
 </style>
