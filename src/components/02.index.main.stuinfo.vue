@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div id="app">
+        <div id="stuinfo">
              <h1>通讯录</h1>
             <div class="head">
                  <!--输入框-->
@@ -633,7 +633,7 @@ export default {
 </script>
 
 <style>
-#app {
+#stuinfo {
     width: 1024px;
     margin: 0 auto;
     height: 720px;
@@ -650,17 +650,17 @@ export default {
     box-shadow: 3px 3px 6px 3px rgba(0, 0, 0, .3);
 }
 
-.add-btn {
+#stuinfo .add-btn {
     margin-top: 20px;
     width: 100%;
 }
 
-.find-btn {
+#stuinfo .find-btn {
     margin-top: 20px;
     width: 100%;
 }
 
-.body {
+#stuinfo .body {
     margin-top: 20px;
 }
 
