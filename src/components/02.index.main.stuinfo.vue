@@ -191,7 +191,7 @@
                 </el-form>
                 </div>
                 <span slot="footer" class="dialog-footer">
-                <el-button @click="dialogVisible = false">取 消</el-button>
+                <el-button @click="dialogFindUpdate = false">取 消</el-button>
                 <el-button type="primary" @click="confirmFindInfo">确 定</el-button>
                 </span>
                 </el-dialog>
