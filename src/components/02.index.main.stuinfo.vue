@@ -61,7 +61,7 @@
                 </template>
 
                 </div>
-            <div class="footer">
+            <div class="dialog">
                 <el-dialog title="编辑信息" :visible.sync="dialogVisible" width="30%" :before-close="handleClose">
                 <div>
                 <el-form ref="form" :model="editInfo" label-width="150px">
@@ -169,7 +169,41 @@
                 </span>
                 </el-dialog> -->
 
+
+                <!-- 一个负责查询后编辑对应信息的dialog -->
+                <el-dialog title="编辑信息" :visible.sync="dialogFindUpdate" width="30%" :before-close="closeFialogFindUpdate">
+                <div>
+                <el-form ref="form" :model="editInfo" label-width="150px">
+                <el-form-item label="修改姓名：">
+                <el-input v-model="editInfo.name"></el-input>
+                </el-form-item>
+                <el-form-item label="修改性别：">
+                <el-input v-model="editInfo.gender"></el-input>
+                </el-form-item>
+                <el-form-item label="修改联系方式：">
+                <el-input v-model="editInfo.phone"></el-input>
+                </el-form-item>
+                <el-form-item label="修改出生日期：">
+                <el-date-picker v-model="editInfo.birth" type="date" placeholder="选择日期" format="yyyy 年 MM 月 dd 日" value-format="yyyy-MM-dd">
+                </el-date-picker>
+                </el-form-item>
+
+                </el-form>
                 </div>
+                <span slot="footer" class="dialog-footer">
+                <el-button @click="dialogVisible = false">取 消</el-button>
+                <el-button type="primary" @click="confirmFindInfo">确 定</el-button>
+                </span>
+                </el-dialog>
+
+
+
+
+
+
+
+
+            </div>
            
         </div>
     </div>
@@ -214,6 +248,7 @@ export default {
             ],
             dialogVisible: false,
             dialogFind: false,
+            dialogFindUpdate: false,
             beforeindex: 0,
             editInfo: {
                 name: '',
@@ -224,6 +259,8 @@ export default {
             },
             findInfoName: '',
             findInfo: [],
+            findUpdateIndex:0,
+            findDataTableIndex:0,
 
 
         }
@@ -392,7 +429,7 @@ export default {
         /*-----------------------------------------------------------------*/
         //dialog对话框的关闭函数
         handleClose(done) {
-            this.$confirm('确定放弃编辑？')
+            this.$confirm('确定放弃编辑吗？')
                 .then(_ => {
                     this.dialogVisible = false;
                     //done();
@@ -403,6 +440,16 @@ export default {
             this.$confirm('确定放弃查找信息吗？')
                 .then(_ => {
                     this.dialogFind = false;
+                    //done();
+                })
+                .catch(_ => {});
+        },
+
+
+        closeFialogFindUpdate(done){
+             this.$confirm('确定放弃编辑吗？')
+                .then(_ => {
+                    this.dialogFindUpdate = false;
                     //done();
                 })
                 .catch(_ => {});
@@ -484,6 +531,32 @@ export default {
         },
 
         editFindUser(item, index) {
+
+
+            this.dialogFindUpdate = true;
+            /* this.editInfo = this.findInfo[index]; */
+            /* 传数据给dialogFindUpdate */
+            this.editInfo={
+                name: item.name,
+                birth:item.birth,
+                gender:item.gender,
+                phone: item.phone,
+            }
+            this.findUpdateIndex = index;
+
+            /* 查找原table中对应的数据的Index */
+            for(var i =0;i<this.tableData.length;i++){
+                if(this.tableData[i].name == this.editInfo.name&&
+                this.tableData[i].gender == this.editInfo.gender&&
+                this.tableData[i].birth == this.editInfo.birth&&
+                this.tableData[i].phone == this.editInfo.phone){
+                    this.findDataTableIndex = i;
+                }
+            }
+            console.log(this.findDataTableIndex);
+
+
+            /* console.log(this.editInfo); */
             /* console.log(item);
             this.beforeindex = index;
             this.editInfo = {
@@ -497,7 +570,7 @@ export default {
         },
 
         confirmFindInfo() {
-            /* if (!this.editInfo.name) {
+            if (!this.editInfo.name) {
                 this.$message({
                     message: '请输入姓名',
                     type: 'warning'
@@ -526,7 +599,14 @@ export default {
                 });
                 return;
             } else {
-                this.dialogVisible = false;
+                this.dialogFindUpdate = false;
+                /* 通过数据校验之后，修改查询dialog中对应的数据和原表单DataTable中对应的数据 */
+                this.findInfo.splice(this.findUpdateIndex,1,this.editInfo);
+                this.tableData.splice(this.findDataTableIndex,1,this.editInfo);
+
+
+
+                /* this.dialogVisible = false;
                 this.findInfo.splice(this.beforeindex , 1 , this.editInfo);
                 //Vue.set(this.findInfo, this.beforeindex, this.editInfo);
                 for (var i = 0; i < this.tableData.length; i++) {
@@ -537,9 +617,9 @@ export default {
                         this.findInfo.splice(i , 1 , this.editInfo)
                         //Vue.set(this.tableData, i, this.editInfo);
                     }
-                }
+                } */
 
-            } */
+            }
 
 
 
