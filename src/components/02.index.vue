@@ -36,6 +36,7 @@ export default {
 .main{
     flex: 1;
     background-color: grey;
+
 }
 
 
