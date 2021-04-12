@@ -636,6 +636,18 @@ export default {
 #app {
     width: 1024px;
     margin: 0 auto;
+    height: 720px;
+
+/*     position: absolute;
+    top: 5; bottom: 0;
+    left: 0; right: 0;
+ */
+/* 这里实现了毛玻璃效果 */
+    line-height: 2;
+
+    border-radius: 5px;
+    background: rgba(255, 255, 255, .3);
+    box-shadow: 3px 3px 6px 3px rgba(0, 0, 0, .3);
 }
 
 .add-btn {
