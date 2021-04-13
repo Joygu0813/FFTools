@@ -646,7 +646,7 @@ export default {
     line-height: 2;
 
     border-radius: 5px;
-    background: rgba(255, 255, 255, .3);
+    background: rgba(255, 255, 255,.3) ;
     box-shadow: 3px 3px 6px 3px rgba(0, 0, 0, .3);
 }
 

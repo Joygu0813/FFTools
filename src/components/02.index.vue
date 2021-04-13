@@ -5,10 +5,10 @@
             
             <el-row class="tac">
                 <el-col :span="24">
-                    <el-menu default-active="2" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose">
+                    <el-menu default-active="2" class="el-menu-vertical-demo" @open="handleNuvOpen" @close="handleNuvClose">
                         <el-submenu index="1">
                             <template slot="title">
-                                <i class="el-icon-location"></i>
+                                <i class="el-icon-video-play"></i>
                                 <router-link to="/player">播放器</router-link>
                             </template>
                             <el-menu-item-group>
@@ -24,12 +24,12 @@
                             </el-submenu>
                         </el-submenu>
                             <el-menu-item index="2">
-                            <i class="el-icon-menu"></i>
+                            <i class="el-icon-s-management"></i>
                             <router-link to="/stuinfo">同学录</router-link>
                             </el-menu-item>
-                            <el-menu-item index="3" disabled>
+                            <el-menu-item index="3" >
                             <i class="el-icon-document"></i>
-                            <span slot="title">敬请期待</span>
+                            <router-link to="/compous">计算器</router-link>
                             </el-menu-item>
                             <el-menu-item index="4" disabled>
                             <i class="el-icon-setting"></i>
@@ -53,6 +53,14 @@
 
 <script>
 export default {
+    methods:{
+        handleNuvOpen(key, keyPath) {
+        console.log(key, keyPath);
+      },
+      handleNuvClose(key, keyPath) {
+        console.log(key, keyPath);
+      }
+    }
 
 }
 </script>

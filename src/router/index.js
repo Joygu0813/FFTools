@@ -3,6 +3,7 @@ import VueRouter from 'vue-router'
 
 import stuInfo from '../components/02.index.main.stuinfo.vue'
 import player from '../components/02.index.main.player.vue'
+import compous from '../components/02.index.main.compous.vue'
 
 
 Vue.use(VueRouter)
@@ -19,6 +20,11 @@ const routes = [{
         component: player,
 
     },
+    {
+        path: '/compous',
+        name: '/compous',
+        component: compous,
+    }
 ]
 
 const router = new VueRouter({
